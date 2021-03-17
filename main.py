@@ -42,7 +42,7 @@ def mainRoute(endpoint):
     token = jsonParams["token"]
     decodedToken = json.loads(json.dumps(id_token.verify_firebase_token(id_token=token, request=requests.Request())))
     userId = decodedToken["user_id"]
-    listName = ""
+    listName = "bla"
     itemName = ""
     companyName = ""
     if "list_name" in jsonParams:
@@ -51,6 +51,7 @@ def mainRoute(endpoint):
         itemName = jsonParams["item_name"]
     if "company_name" in jsonParams:
         companyName = jsonParams["company_name"]
+    print('endpoint:', endpoint)
     if endpoint == 'create_user':
         return create_user(jsonDataFile, userId)
     if endpoint == 'add_list':
@@ -69,7 +70,6 @@ def mainRoute(endpoint):
         return uncheck_item(jsonDataFile, userId, listName, itemName, companyName)
 
 
-
 def create_user(jsonDataFile, new_user_id):
     for user in jsonDataFile:
         if user["user_id"] == new_user_id:
@@ -81,6 +81,7 @@ def create_user(jsonDataFile, new_user_id):
 
 
 def add_list(jsonData, userId, listName):
+    print('added list ')
     for user in jsonData:
         if user["user_id"] == userId:
             for userList in user["lists"]:
@@ -94,6 +95,7 @@ def add_list(jsonData, userId, listName):
 
 
 def remove_list(jsonData, userId, listName):
+    print('removed list')
     for user in jsonData:
         if user["user_id"] == userId:
             for userList in user["lists"]:
@@ -107,6 +109,7 @@ def remove_list(jsonData, userId, listName):
 
 
 def get_lists(jsonData, userId):
+    print('gotttt')
     for user in jsonData:
         if user["user_id"] == userId:
             return json.dumps(user["lists"])
@@ -164,19 +167,7 @@ def check_item(jsonDataFile, userId, listName, itemName, companyName):
     return "this user doesnt exist"
 
 
-# @app.route('/uncheck_item', methods=['POST'])
-# @token_required
 def uncheck_item(jsonDataFile, userId, listName, itemName, companyName):
-    # dataFile = open("data.json", "r")
-    # jsonData = json.load(dataFile)
-    # jsonParams = request.json
-    # token = jsonParams["token"]
-    # decodedToken = json.loads(json.dumps(id_token.verify_firebase_token(id_token=token, request=requests.Request())))
-    # user_id = decodedToken["user_id"]
-    # list_name = jsonParams["list_name"]
-    # item_name = jsonParams["item_name"]
-    # company_name = jsonParams["company_name"]
-    # if request.method == 'POST':
     for user in jsonDataFile:
         if user["user_id"] == userId:
             for userList in user["lists"]:

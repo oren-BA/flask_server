@@ -86,6 +86,7 @@ def add_list(jsonData, userId, listName):
         if user["user_id"] == userId:
             for userList in user["lists"]:
                 if userList["list_name"] == listName:
+                    print("this user already has a list with this name")
                     return "this user already has a list with this name"
             user["lists"].append(create_empty_list(listName))
             dataFile = open("data.json", "w")
@@ -116,10 +117,18 @@ def get_lists(jsonData, userId):
 
 
 def add_item(jsonDataFile, userId, listName, itemName, companyName):
+    if itemName == "":
+        return "the item has to have a name"
     for user in jsonDataFile:
         if user["user_id"] == userId:
             for userList in user["lists"]:
                 if userList["list_name"] == listName:
+                    for uncheckedItem in userList["uncheckedItems"]:
+                        if uncheckedItem["item_name"] == itemName and uncheckedItem["company_name"] == companyName:
+                            return "this list already contains this item"
+                    for checkedItem in userList["checkedItems"]:
+                        if checkedItem["item_name"] == itemName and uncheckedItem["company_name"] == companyName:
+                            return "this list already contains this item"
                     userList["uncheckedItems"].append(create_item(itemName, companyName))
                     dataFile = open("data.json", "w")
                     dataFile.write(json.dumps(jsonDataFile))
